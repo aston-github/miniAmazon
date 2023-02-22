@@ -1,0 +1,124 @@
+{% extends "base.html" %}
+
+{% block content %}
+
+<br><br>
+
+<p>
+  {% with messages = get_flashed_messages() %}
+  {% if messages %}
+  <ul>
+    {% for message in messages %}
+    <li>{{ message }}</li>
+    {% endfor %}
+  </ul>
+  {% endif %}
+  {% endwith %}
+</p>
+
+<h2>Public Profile:</h2>
+<table class='table table-hover table-bordered container'>
+  <thead class="thead-dark">
+    <tr>
+      <th scope="col">User id</th>
+      <th scope="col">First Name</th>
+      <th scope="col">Last Name</th>
+      {% if is_seller == 'True' %}
+      <th scope="col">Email</th>
+      <th scope="col">Address</th>
+      {% endif %}
+    </tr>
+  </thead>
+  <tbody>
+    {% for user in info%}
+      <tr>
+        <th scope="row">{{user.id}}</th>
+        <td>{{user.firstname}}</td>
+        <td>{{user.lastname}}</td>
+        {% if is_seller == 'True'%}
+        <td>{{user.email}}</td>
+        <td>{{user.address}}</td>
+        {% endif %}
+      </tr>
+    {% endfor %}
+  </tbody>
+</table>
+
+<img src="db/data/images/vanilla.webp" alt="">
+
+{% if is_seller == 'True'%}
+<div>
+  <!-- <div style ='display: inline-block'><img src= "{{image}}" width = 300 height = 300></div> -->
+  <div style ='display: inline-block; border-style: solid; border-width: 1px;'><form action="{{url_for('users.public_profile', id=id, is_seller = is_seller)}}" method="post" novalidate>
+    <h1><u>Leave a Review</u></h1>
+    <br>
+    {{ ratingForm.hidden_tag() }}
+    <p>
+      {{ ratingForm.rating.label }}<br/>
+      {{ ratingForm.rating(size=32) }}<br/>
+      {% for error in ratingForm.rating.errors %}
+      <span style="color: red;">[{{ error }}]</span>
+      {% endfor %}
+    </p>
+    <p>
+      {{ ratingForm.review.label }}<br/>
+      {{ ratingForm.review(size=32) }}<br/>
+      {% for error in ratingForm.review.errors %}
+      <span style="color: red;">[{{ error }}]</span>
+      {% endfor %}
+    </p>
+    <p>
+      {% with messages = get_flashed_messages() %}
+      {% if messages %}
+      <ul>
+        {% for message in messages %}
+        <li>{{ message }}</li>
+        {% endfor %}
+      </ul>
+      {% endif %}
+      {% endwith %}
+    </p>
+    {{ ratingForm.submit1(class_="btn btn-black") }}
+  </form></div>
+</div>
+
+<h2>Seller Reviews Summary: </h2>
+<table class='table table-hover table-bordered container'>
+  <thead class="thead-dark">
+    <tr>
+      <th scope="col">Average Rating</th>
+      <th scope="col">Number of ratings</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>{{avgRating}}</td>
+      <td>{{numReviews}}</td>
+    </tr>
+  </tbody>
+</table>
+
+<h2>Seller Reviews List: </h2>
+<table class='table table-hover table-bordered container'>
+  <thead class="thead-dark">
+    <tr>
+      <th scope="col">Reviewer id</th>
+      <th scope="col">Rating 0-5</th>
+      <th scope="col">Review</th>
+      <th scope="col">Review date</th>
+    </tr>
+  </thead>
+  <tbody>
+    {% for r in reviews%}
+      <tr>
+        <th scope="row">{{r.uid}}</th>
+        <td>{{r.rating}}</td>
+        <td>{{r.review}}</td>
+        <td>{{r.reviewdate}}</td>
+      </tr>
+    {% endfor %}
+  </tbody>
+</table>
+{% endif %}
+
+{% endblock %}

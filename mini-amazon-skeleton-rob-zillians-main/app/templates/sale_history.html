@@ -1,0 +1,72 @@
+{% extends "base.html" %}
+
+{% block content %}
+
+<br><br>
+
+<p>
+  {% with messages = get_flashed_messages() %}
+  {% if messages %}
+  <ul>
+    {% for message in messages %}
+    <li>
+      {{ message }}
+      {% if update %}
+        <!-- Button that appears with/next to a message about the previous interaction. Button leads to the (possibly) affected row. -->
+        <a href="#new-row" id="top-row">Jump to this order</a>
+      {% endif %}
+    </li>
+    {% endfor %}
+  </ul>
+  {% endif %}
+  {% endwith %}
+</p>
+
+{% if current_user.is_authenticated %}
+<h2>Your recent Sales:</h2>
+<table class='table table-hover table-bordered container'>
+  <thead class="thead-dark">
+    <tr>
+      <!-- Column headers and sorting buttons -->
+      <th scope="col">Purchase ID <div style="text-align:right"><a href="{{ url_for('sellers.sale_history', s=2, a=1) }}">&#8593;</a> <a href="{{ url_for('sellers.sale_history', s=2) }}">&#8595;</a></div></th>
+      <th scope="col">Product Id <div style="text-align:right"><a href="{{ url_for('sellers.sale_history', s=4, a=1) }}">&#8593;</a> <a href="{{ url_for('sellers.sale_history', s=4) }}">&#8595;</a></div></th>
+      <th scope="col">User Id <div style="text-align:right"><a href="{{ url_for('sellers.sale_history', s=3, a=1) }}">&#8593;</a> <a href="{{ url_for('sellers.sale_history', s=3) }}">&#8595;</a></div></th>
+      <th scope="col">Address</th>
+      <th scope="col">Order Time <div style="text-align:right"><a href="{{ url_for('sellers.sale_history', s=0, a=1) }}">&#8593;</a> <a href="{{ url_for('sellers.sale_history', s=0) }}">&#8595;</a></div></th>
+      <th scope="col">Quantity <div style="text-align:right"><a href="{{ url_for('sellers.sale_history', s=5, a=1) }}">&#8593;</a> <a href="{{ url_for('sellers.sale_history', s=5) }}">&#8595;</a></div></th>
+      <th scope="col">Unit Price <div style="text-align:right"><a href="{{ url_for('sellers.sale_history', s=6, a=1) }}">&#8593;</a> <a href="{{ url_for('sellers.sale_history', s=6) }}">&#8595;</a></div></th>
+      <th scope="col">Total Price <div style="text-align:right"><a href="{{ url_for('sellers.sale_history', s=7, a=1) }}">&#8593;</a> <a href="{{ url_for('sellers.sale_history', s=7) }}">&#8595;</a></div></th>
+      <th scope="col">Order Status <div style="text-align:right"><a href="{{ url_for('sellers.sale_history', s=1, a=1) }}">&#8593;</a> <a href="{{ url_for('sellers.sale_history', s=1) }}">&#8595;</a></div></th>
+      <th scope="col">View Order</th>
+    </tr>
+  </thead>
+  <tbody>
+    {% for purchase in purchases%}
+      <!-- Highlight the row if the order is the same as the order id in update. Top button scrolls down to here using an anchor assigned to only this row. -->
+      <tr id='{{"new-row" if purchase.purchase_id == update|int else none}}'>
+        <th scope="row">{{purchase.purchase_id}}</th>
+        <td>{{purchase.product_id}}</td>
+        <td>{{purchase.user_id}}</td>
+        <td>{{purchase.address}}</td>
+        <td>{{purchase.time_purchased}}</td>
+        <td>{{purchase.quantity}}</td>
+        <td><strong>$</strong>{{purchase.final_price}}</td>
+        <td><strong>$</strong>{{purchase.total}}</td>
+        <!-- See the fulfillment time, if there is one, with order status. Fulfill button appears for orders that have been fulfilled too so sellers can click it and get the exact fulfillment time. -->
+        <td>{{purchase.order_status}} {% if purchase.order_status == "Fulfilled" %} on <br>{{purchase.fulfillment_time.strftime('%Y-%m-%d')}} {% endif %}
+            <div style="text-align:center"><form action="sale_history" method="get"><button type="submit">Fulfill</button><input type="hidden" name="f" value={{purchase.purchase_id}}></form></div>
+        </td>
+        <!-- See the order as a seller. -->
+        <td><a href = "{{url_for('carts.view_order', prod = purchase.product_id, time = purchase.time_purchased, seller_view = purchase.user_id, oid = purchase.purchase_id)}}">View</a><br>
+        <!-- A "Jump back to top" button on the order referred to by the top anchor when a message appears, since this order could be very far down. -->
+        <!-- Idk why there's a problem, it happens whether you use single or double brackets -->
+        <a href="#search-container" style='{{ "display:default" if purchase.purchase_id == update|int else "visibility:hidden" }}'>Jump back</a href></td>
+      </tr>
+    {% endfor %}
+  </tbody>
+</table>
+{% else %}
+<p><a href="{{ url_for('users.login') }}">Log in</a> to see your history!</p>
+{% endif %}
+
+{% endblock %}

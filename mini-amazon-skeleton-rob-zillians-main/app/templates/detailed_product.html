@@ -1,0 +1,158 @@
+{% extends "base.html" %}
+
+{% block content %}
+{% if ad %}
+<a href="{{ url_for('products.detailed_product', prod=ad.product_id, click=ad.id) }}" style="text-decoration:none">
+<div style="justify-content:center;display:flex;color:black;background-color:cornsilk;align-items:center;border: 1px solid black;width:50%;margin-left:25%;margin-right:25%">
+  <img style="flex-basis:30%" src= "{{ad.image_url}}" width = 120 height = 120>
+  <span class="ad_text" style="padding-left:40px">{{ad.description}}</span>
+</div>
+</a>
+{% endif %}
+
+<!-- Load in a link to add stars for reviews -->
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+
+<!-- Display the current product's name at the top of the page-->
+<h1><b>{{curr_product.name}}</b></h1>
+<br>
+<!-- Side by side (with some spaces) display the product's associated image and a form for reviewing the product -->
+<!-- The form (with details specified in the products.py file, has a field for a rating out of 5, a review, and a submission button) -->
+<!-- On clicking submit, the form will return users to the same page, with a message regarding the success or failure of the form's submission -->
+<!-- The form will have a header that reads: "Leave a Review" -->
+<div style="color: black; text-align: end;" class = "container"></div>
+  <div style ='display: inline-block'><img src= "{{image}}" width = 300 height = 300></div>
+  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+  <div style ='display: inline-block;  border-style: solid; border-width: 1px;'><form action= "{{url_for('products.detailed_product', prod = curr_product.id)}}" method="post" novalidate>
+    <h1><u>Leave a Review</u></h1>
+    <br>
+    {{ ratingForm.hidden_tag() }}
+    <p>
+      {{ ratingForm.rating.label }}<br/>
+      {{ ratingForm.rating(size=32) }}<br/>
+      {% for error in ratingForm.rating.errors %}
+      <span style="color: red;">[{{ error }}]</span>
+      {% endfor %}
+    </p>
+    <p>
+      {{ ratingForm.review.label }}<br/>
+      {{ ratingForm.review(size=32) }}<br/>
+      {% for error in ratingForm.review.errors %}
+      <span style="color: red;">[{{ error }}]</span>
+      {% endfor %}
+    </p>
+    <p>
+      {% with messages = get_flashed_messages() %}
+      {% if messages %}
+      <ul>
+        {% for message in messages %}
+        <li>{{ message }}</li>
+        {% endfor %}
+      </ul>
+      {% endif %}
+      {% endwith %}
+    </p>
+    {{ ratingForm.submit1(class_="btn btn-black") }}
+  </form></div>
+</div>
+
+<!-- Create a table to display basic information about all sellers of this product (the seller id, the seller's average rating, the price the seller is selling this product for, and the quantity the seller has in stock) -->
+<!-- Create a series of buttons within each table entry (i.e. each row associated with a seller) for adding the product to the cart -->
+<br><br>
+<h2><u>Sellers:</u></h2>
+<table class='table table-hover table-bordered container'>
+  <thead class="thead-dark">
+    <tr>
+      <th scope="col">Seller ID</th>
+      <th scope="col">Seller Average Rating</th>
+      <th scope="col">Price</th>
+      <th scope="col">Quantity Available</th>
+      <th scope="col">Add to Cart?</th>
+    </tr>
+  </thead>
+  <tbody>
+    {% for product in sellers_of_product%}
+      <tr {% if product.seller_id == s %} id="new-row" {% endif %}> 
+        <!-- Link the each seller to the respective seller profile -->
+        <td><a href="{{url_for('users.public_profile', id = product.seller_id, is_seller = 'True')}}">{{product.seller_id}}</a></td>
+        {% for seller in seller_ratings %}
+        {% if seller[0] == product.seller_id %}
+        <td>{{seller[1]}}</td>
+        {% endif %}
+        {% endfor %}
+        <td>${{product.price}}</td>
+        <td>{{product.quantity_in_stock}}</td>
+        <!-- Buttons for adding the product to the cart, which link to the User's cart page -->
+        <!-- The user has the option to add 1, 5, 10, 25, or the entire quantity of the seller's inventory (granted that the inventory is not 1,5,10, or 25) into the cart -->
+        <!-- Note that buttons will only be created if a seller has enough quantity in stock, for instance if a seller only has 7 units of a product, only buttons displaying 1, 5 and 7 will appear  -->
+        <!-- If a seller has no quantity of the product in stock, print "Out of Stock" -->
+        <td>
+          {% if product.quantity_in_stock >= 1 %}
+          <a href="{{ url_for('products.added_to_cart', sid = product.seller_id, price = product.price, pid = curr_product.id, quantity = 1, click=click, s=s)}}" type="button" class="btn btn-light" style="background-color: green; color: white">+1</a>
+          {% endif %}
+          {% if product.quantity_in_stock >= 5 %}
+          <a href="{{ url_for('products.added_to_cart', sid = product.seller_id, price = product.price, pid = curr_product.id, quantity = 5, click=click, s=s)}}" type="button" class="btn btn-light" style="background-color: green; color: white">+5</a>
+          {% endif %}
+          {% if product.quantity_in_stock >= 10 %}
+          <a href="{{ url_for('products.added_to_cart', sid = product.seller_id, price = product.price, pid = curr_product.id, quantity = 10, click=click, s=s)}}" type="button" class="btn btn-light" style="background-color: green; color: white">+10</a>
+          {% endif %}
+          {% if product.quantity_in_stock >= 25 %}
+          <a href="{{ url_for('products.added_to_cart', sid = product.seller_id, price = product.price, pid = curr_product.id, quantity = 25, click=click, s=s)}}" type="button" class="btn btn-light" style="background-color: green; color: white">+25</a>
+          {% endif %}
+          {% if product.quantity_in_stock > 0 and product.quantity_in_stock != 1 and product.quantity_in_stock != 5 and product.quantity_in_stock != 10 and product.quantity_in_stock != 25 %}
+          <a href="{{ url_for('products.added_to_cart', sid = product.seller_id, price = product.price, pid = curr_product.id, quantity = product.quantity_in_stock)}}" type="button" class="btn btn-light" style="background-color: green; color: white">+{{product.quantity_in_stock}}</a>
+          {% endif %}
+          {% if product.quantity_in_stock == 0 %}
+          Out of stock
+          {% endif %}
+        </td>
+      </tr>
+    {% endfor %}
+  </tbody>
+</table>
+<br><br>
+
+<h2><u>Ratings:</u></h2>
+
+<!-- Create a 5 star-rating display for the product, where the number of yellow stars will correspond to the average rating (if a product has an average rating of 2.0, display 2 yellow starts and 3 gray stars following them) -->
+<!-- If a product has not been rated, display "No Reviews" -->
+<!-- If a product has an average rating in between [x.5, x.0] (for instance somewhere in between 2.5 to 3), then color an additional star yellow (the equivalent of taking the ceiling of the average rating when the rating is closer to the next highest integer than the next lowest integer) -->
+{% if avg_product == -1 %}
+  <h4>No Reviews</h4>
+{% elif avg_product >= 0 %}
+<!-- Display the product's average rating out of 5 if it exists -->
+<h6>Average Rating: {{avg_product}} / 5.00</h6>
+<h6>Number of Ratings: {{num_ratings}}</h6>
+{% for x in range(5)%}
+  {% if avg_product >= (x + 1) or (avg_product_2 + 0.50) >= ((x+1) // 1)%}
+    <span class="fa fa-star checked" style = "color: yellow; font-size: 50px;"></span>
+  {% else %}
+    <span class="fa fa-star checked" style = "color: darkgray; font-size: 50px;"></span>
+  {% endif %}
+{% endfor %}
+
+<!-- Create a table containing basic information related to each review of the displayed product (the id of the user who reviewed the product, the rating out of 5, the reason behind the review, and the time of the review)-->
+<table class='table table-hover table-bordered container'>
+  <thead class="thead-dark">
+    <tr>
+      <th scope="col">User ID</th>
+      <th scope="col">Rating</th>
+      <th scope="col">Description</th>
+      <th scope="col">Time of Review</th>
+    </tr>
+  </thead>
+  <tbody>
+    {% for rating in product_ratings%}
+      <tr>
+        <!-- Link each user to the respective user profile -->
+        <td><a href="{{url_for('users.public_profile', id = rating.user_id, is_seller = 'False')}}">{{rating.user_id}}</a></td>
+        <td>{{rating.rating}}</td>
+        <td>{{rating.review}}</td>
+        <td>{{rating.reviewdate}}</td>
+      </tr>
+    {% endfor %}
+  </tbody>
+</table>
+{% endif %}
+
+{% endblock %}

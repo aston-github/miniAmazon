@@ -1,0 +1,130 @@
+{% extends "base.html" %}
+
+{% block content %}
+<!-- Page for creating a new product -->
+<!-- Add a header above the form for creating a new product that reads: "Add Product"-->
+{% if c %}
+<h2><u>Create New Ad Campaign:</u></h2>
+{% else %}
+<h2><u>Edit an Ad Campaign:</u></h2>
+{% endif %}
+
+<!-- Create form with a field for the new product's name, description, category (which must be from the pre-defined list), the quantity the seller wants to add to inventory, and the price the seller wishes to sell it at -->
+<!-- The form also has a submit form, which takes a seller to their inventory page if the new product is succesfully created (or back to the add product page with a message explaining why a product was not created if the form fails) -->
+<form action="" method="post">
+    {{ adform.csrt_token }}
+    {% if c %}
+        {{ adform.pid(value=ad.product_id) }}
+    {% elif e %}
+        {{ adform.pid(value=ad.id) }}
+    {% endif %}
+  <p>
+    {{ adform.nickname.label }}<br/>
+    {% if c %}
+        {{ adform.nickname(size=32, value=ad.name) }}<br/>
+    {% elif e %}
+        {{ adform.nickname(size=32, value=ad.nickname) }}<br/>
+    {% else %}
+        {{ad.nickname}}
+    {% endif %}
+    {% for error in adform.nickname.errors %}
+    <span style="color: red;">[{{ error }}]</span>
+    {% endfor %}
+  </p>
+  <p>
+    {{ adform.description.label }}<br/>
+    {% if c %}
+        {{ adform.description(size=32, value=ad.description) }}<br/>
+    {% elif e %}
+        {{ adform.description(size=32, value=ad.description) }}<br/>
+    {% else %}
+        {{ad.description}}
+    {% endif %}
+    {% for error in adform.description.errors %}
+    <span style="color: red;">[{{ error }}]</span>
+    {% endfor %}
+  </p>
+  <p>
+    {{ adform.image_url.label }}<br/>
+    {% if c %}
+        {{ adform.image_url(size=32, value=ad.image_url) }}<br/>
+    {% elif e %}
+        {{ adform.image_url(size=32, value=ad.image_url) }}<br/>
+    {% else %}
+        {{ad.image_url}}
+    {% endif %}
+    {% for error in adform.image_url.errors %}
+    <span style="color: red;">[{{ error }}]</span>
+    {% endfor %}
+  </p>
+  <p>
+    {{ adform.category.label }}<br/>
+    {% if c %}
+        {{ adform.category(size=32, value=ad.category_name) }}<br/>
+    {% elif e %}
+        {{ adform.category(size=32, value=ad.category) }}<br/>
+    {% else %}
+        {{ad.category}}
+    {% endif %}
+    {% for error in adform.category.errors %}
+    <span style="color: red;">[{{ error }}]</span>
+    {% endfor %}
+  </p>
+  <p>
+    {{ adform.start_time.label }}<br/>
+    Current Start Time: {{ad.start_time.strftime('%m/%d/%Y') if ad.start_time else None}}<br/>
+    {% if c %}
+        {{ adform.start_time(type='date') }}<br/>
+    {% elif e %}
+        {{ adform.start_time(type='date') }}<br/>
+    {% else %}
+        {{ad.start_time}}
+    {% endif %}
+    {% for error in adform.start_time.errors %}
+    <span style="color: red;">[{{ error }}]</span>
+    {% endfor %}
+  </p>
+  <p>
+    {{ adform.end_time.label }}<br/>
+    Current End Time: {{ad.end_time.strftime('%m/%d/%Y') if ad.end_time else None}}<br/>
+    {% if c %}
+        {{ adform.end_time(type='date') }}<br/>
+    {% elif e %}
+        {{ adform.end_time(type='date') }}<br/>
+    {% else %}
+        {{ad.end_time}}
+    {% endif %}
+    {% for error in adform.end_time.errors %}
+    <span style="color: red;">[{{ error }}]</span>
+    {% endfor %}
+  </p>
+  <p>
+    {% with messages = get_flashed_messages() %}
+    {% if messages %}
+    <ul>
+      {% for message in messages %}
+      <li>{{ message }}</li>
+      {% endfor %}
+    </ul>
+    {% endif %}
+    {% endwith %}
+  </p>
+  <p>{{ adform.submit_ad() }}</p>
+</form>
+
+<!-- Create a list of all possible pre-defined product categories for the convenience of the person choosing who they want to advertise towards -->
+<h2>Possible Product Categories</h2>
+<table class='table table-hover table-bordered container'>
+    <thead class="thead-dark">
+      <tr>
+        <th scope="col">Category Names</th>
+      </tr>
+    </thead>
+    <tbody>
+      {% for category in categories%}
+        <tr>
+          <td>{{category.name}}</td>
+        </tr>
+      {% endfor %}
+    </tbody>
+{% endblock %}

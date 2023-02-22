@@ -1,0 +1,51 @@
+{% extends "base.html" %}
+
+{% block content %}
+<br>
+<!-- Page for browsing by category -->
+<!-- Each page displays all categories that begin with a specific letter and have some product associated with it(by default A, but this letter can be changed by the user) -->
+<h1><u>Select a Category:</u></h1>
+
+<!-- For each category that begins with a specific letter, hyperlink this category to a search results page for all products in the category. The link will be accessible by clicking on the category names. -->
+<!-- Add a " | " character after each category for increased readability -->
+{% for category in categories %}
+<a href="{{ url_for('products.category_search_results', search = category[0])}}">{{category[0]}}</a> |
+{% endfor %}
+<!-- If there are no categories that begin with a specific letter, then display "No Categories Begin with ..." -->
+{% if cats %}
+No Categories Begin with {{letter}}
+{% endif %}
+
+<!-- Paginate by starting letter. Create buttons that link to new pages that display all categories that begin with the letter displayed on the button -->
+<br><br><br>
+<div style="color: black; text-align: center; margin-bottom: 25px">
+    <u>Click for More Categories:</u>
+    <a href="{{ url_for('products.browse_by_category', letter = 'A')}}"><u>A</u></a>
+    <a href="{{ url_for('products.browse_by_category', letter = 'B')}}"><u>B</u></a>
+    <a href="{{ url_for('products.browse_by_category', letter = 'C')}}"><u>C</u></a>
+    <a href="{{ url_for('products.browse_by_category', letter = 'D')}}"><u>D</u></a>
+    <a href="{{ url_for('products.browse_by_category', letter = 'E')}}"><u>E</u></a>
+    <a href="{{ url_for('products.browse_by_category', letter = 'F')}}"><u>F</u></a>
+    <a href="{{ url_for('products.browse_by_category', letter = 'G')}}"><u>G</u></a>
+    <a href="{{ url_for('products.browse_by_category', letter = 'H')}}"><u>H</u></a>
+    <a href="{{ url_for('products.browse_by_category', letter = 'I')}}"><u>I</u></a>
+    <a href="{{ url_for('products.browse_by_category', letter = 'J')}}"><u>J</u></a>
+    <a href="{{ url_for('products.browse_by_category', letter = 'K')}}"><u>K</u></a>
+    <a href="{{ url_for('products.browse_by_category', letter = 'L')}}"><u>L</u></a>
+    <a href="{{ url_for('products.browse_by_category', letter = 'M')}}"><u>M</u></a>
+    <a href="{{ url_for('products.browse_by_category', letter = 'N')}}"><u>N</u></a>
+    <a href="{{ url_for('products.browse_by_category', letter = 'O')}}"><u>O</u></a>
+    <a href="{{ url_for('products.browse_by_category', letter = 'P')}}"><u>P</u></a>
+    <a href="{{ url_for('products.browse_by_category', letter = 'Q')}}"><u>Q</u></a>
+    <a href="{{ url_for('products.browse_by_category', letter = 'R')}}"><u>R</u></a>
+    <a href="{{ url_for('products.browse_by_category', letter = 'S')}}"><u>S</u></a>
+    <a href="{{ url_for('products.browse_by_category', letter = 'T')}}"><u>T</u></a>
+    <a href="{{ url_for('products.browse_by_category', letter = 'U')}}"><u>U</u></a>
+    <a href="{{ url_for('products.browse_by_category', letter = 'V')}}"><u>V</u></a>
+    <a href="{{ url_for('products.browse_by_category', letter = 'W')}}"><u>W</u></a>
+    <a href="{{ url_for('products.browse_by_category', letter = 'X')}}"><u>X</u></a>
+    <a href="{{ url_for('products.browse_by_category', letter = 'Y')}}"><u>Y</u></a>
+    <a href="{{ url_for('products.browse_by_category', letter = 'Z')}}"><u>Z</u></a>
+
+</div>
+{% endblock %}

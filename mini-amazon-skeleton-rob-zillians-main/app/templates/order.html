@@ -1,0 +1,56 @@
+{% extends "base.html" %}
+
+{% block content %}
+
+<br>
+
+<h1>Order Summary</h1>
+
+<br>
+
+<h5><b>Overall Status: </b>{{statuses}}</h5>
+
+<br>
+
+<table class='table table-hover table-bordered container'>
+    <thead class="thead-dark">
+      <tr>
+        <th scope="col">Product ID</th>
+        <th scope="col">Image</th>
+        <th scope="col">Product Name</th>
+        <th scope="col">Final Unit Price</th>
+        {% if seller_view %}
+          <th scope="col">Address</th>
+          <th scope="col">Email</th>
+        {% endif %}
+        <th scope="col">Quantity</th>
+        <th scope="col">Time Purchased</th>
+        <th scope="col">Order Status
+        </th>
+      </tr>
+    </thead>
+    <tbody>
+      {% for order_product in order_products%}
+        <tr>
+          <th scope="row">{{order_product[1]}}</th>
+          <td><img src = "{{order_product[9]}}" width = 50 height = 50></td>
+          <td><a href = "{{url_for('products.detailed_product', prod = order_product[1])}}"> {{order_product[3]}} </a></td>
+          <td>{{order_product[8]}}</td>
+          {% if seller_view %}
+            <td>{{customer_info[0][5]}}</td>
+            <td>{{customer_info[0][1]}}</td>
+          {% endif %}
+          <td>{{order_product[6]}}</td>
+          <td>{{order_product[4]}}</td>
+          <td>{{order_product[7]}} {% if seller_view %} <form action="sale_history" method="get"><button type="submit">Fulfill</button><input type="hidden" name="f" value={{oid}}></form> {% endif %}</td>
+        </tr>
+      {% endfor %}
+    </tbody>
+</table>
+
+<h5><b>Order Total: </b>${{total_price}}</h5>
+
+<br>
+
+
+{% endblock %}

@@ -1,0 +1,75 @@
+{% extends "base.html" %}
+
+{% block content %}
+
+<br>
+
+<h1>Cart</h1>
+
+<p>
+  {% with messages = get_flashed_messages() %}
+  {% if messages %}
+  <ul>
+    <font
+    color="#FF0000">
+    {% for message in messages %}
+    <li>
+    {{ message }}
+    </li>
+    {% endfor %}
+  </font>
+  </ul>
+  {% endif %}
+  {% endwith %}
+</p>
+
+<h5>View your <a href="{{ url_for('carts.view_saved_for_later') }}"> Saved Items </a></h5>
+
+<table class='table table-hover table-bordered container'>
+    <thead class="thead-dark">
+      <tr>
+        <th scope="col">Product ID</th>
+        <th scope="col">Image</th>
+        <th scope="col">Product Name</th>
+        <th scope="col">Unit Price</th>
+        <th scope="col">Quantity</th>
+        <th scope="col">Edit Quantity</th>
+        <th scope="col">Save for Later</th>
+        <th scope="col">Delete</th>
+      </tr>
+    </thead>
+    <tbody>
+      {% for cart_product in cart_products%}
+        <tr>
+          <th scope="row">{{cart_product[0]}}</th>
+          <td><img src = "{{cart_product[6]}}" width = 50 height = 50></td>
+          <td><a href = "{{url_for('products.detailed_product', prod = cart_product[0])}}"> {{cart_product[1]}} </a></td>
+          <td>${{cart_product[2]}}</td>
+          <td>{{cart_product[3]}}</td>
+          <td>
+            <a href="{{ url_for('carts.increment_quantity', item = cart_product[4])}}" type="button" class="btn btn-light" style="background-color: green; color: white">+1</a>
+            {% if cart_product[3] > 1 %}
+            <a href="{{ url_for('carts.decrement_quantity', item = cart_product[4])}}" type="button" class="btn btn-light" style="background-color: red; color: white">-1</a>
+            {% endif %}
+          </td>
+          <td><a href = "{{url_for('carts.save_for_later', item = cart_product[4])}}">Save</a></td>
+          <td><a href = "{{url_for('carts.delete_cart_item', item = cart_product[4])}}">Delete</a></td>
+        </tr>
+      {% endfor %}
+    </tbody>
+</table>
+
+{% if not total_price %}
+<h5><b>Total: </b>$0.00</h5>
+{% endif %}
+
+{% if total_price %}
+<h5><b>Total: </b>${{total_price}}</h5>
+{% endif %}
+
+<br>
+
+<a href="{{ url_for('carts.place_order')}}" type="button" class="btn btn-dark">Place Order</a>
+
+
+{% endblock %}

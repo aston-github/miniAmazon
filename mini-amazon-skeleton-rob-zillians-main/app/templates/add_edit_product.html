@@ -1,0 +1,111 @@
+{% extends "base.html" %}
+
+{% block content %}
+<!-- Page for creating a new product -->
+<!-- Add a header above the form for creating a new product that reads: "Add Product"-->
+{% if not editonly %}
+<h2><u>Add Product:</u></h2>
+{% else %}
+<h2><u>Edit A Product I Created:</u></h2>
+{% endif %}
+
+<!-- Create form with a field for the new product's name, description, category (which must be from the pre-defined list), the quantity the seller wants to add to inventory, and the price the seller wishes to sell it at -->
+<!-- The form also has a submit form, which takes a seller to their inventory page if the new product is succesfully created (or back to the add product page with a message explaining why a product was not created if the form fails) -->
+<form action="" method="post">
+  {{ addProduct.hidden_tag() }}
+  <p>
+    {{ addProduct.productname.label }}<br/>
+    {% if editonly %}
+    {{ addProduct.productname(size=32, value=product.name) }}<br/>
+    {% else %}
+    {{ addProduct.productname(size=32) }}<br/>
+    {% endif %}
+    {% for error in addProduct.productname.errors %}
+    <span style="color: red;">[{{ error }}]</span>
+    {% endfor %}
+  </p>
+  <p>
+    {{ addProduct.description.label }}<br/>
+    {% if editonly %}
+    {{ addProduct.description(size=32, value=product.description) }}<br/>
+    {% else %}
+    {{ addProduct.description(size=32) }}<br/>
+    {% endif %}
+    {% for error in addProduct.description.errors %}
+    <span style="color: red;">[{{ error }}]</span>
+    {% endfor %}
+  </p>
+  <p>
+    {{ addProduct.image.label }}<br/>
+    {% if editonly %}
+    {{ addProduct.image(size=32, value=product.image_url) }}<br/>
+    {% else %}
+    {{ addProduct.image(size=32) }}<br/>
+    {% endif %}
+    {% for error in addProduct.image.errors %}
+    <span style="color: red;">[{{ error }}]</span>
+    {% endfor %}
+  </p>
+  <p>
+    {{ addProduct.category.label }}<br/>
+    {% if editonly %}
+    {{ addProduct.category(size=32, value=product.category_name) }}<br/>
+    {% else %}
+    {{ addProduct.category(size=32) }}<br/>
+    {% endif %}
+    {% for error in addProduct.category.errors %}
+    <span style="color: red;">[{{ error }}]</span>
+    {% endfor %}
+  </p>
+  <p>
+    {{ addProduct.quantity.label }}<br/>
+    {% if editonly %}
+    {{ addProduct.quantity(size=32, value=product.quantity_in_stock) }}<br/>
+    {% else %}
+    {{ addProduct.quantity(size=32) }}<br/>
+    {% endif %}
+    {% for error in addProduct.quantity.errors %}
+    <span style="color: red;">[{{ error }}]</span>
+    {% endfor %}
+  </p>
+  <p>
+    {{ addProduct.price.label }}<br/>
+    {% if editonly %}
+    {{ addProduct.price(size=32, value=product.price) }}<br/>
+    {% else %}
+    {{ addProduct.price(size=32) }}<br/>
+    {% endif %}
+    {% for error in addProduct.price.errors %}
+    <span style="color: red;">[{{ error }}]</span>
+    {% endfor %}
+  </p>
+  <p>
+    {% with messages = get_flashed_messages() %}
+    {% if messages %}
+    <ul>
+      {% for message in messages %}
+      <li>{{ message }}</li>
+      {% endfor %}
+    </ul>
+    {% endif %}
+    {% endwith %}
+  </p>
+  <p>{{ addProduct.submitproduct() }}</p>
+</form>
+
+<!-- Create a list of all possible pre-defined product categories for the convenience of the person creating a product -->
+<h2>Possible Product Categories</h2>
+<table class='table table-hover table-bordered container'>
+    <thead class="thead-dark">
+      <tr>
+        <th scope="col">Category Names</th>
+      </tr>
+    </thead>
+    <tbody>
+      {% for category in categories%}
+        <tr>
+          <td>{{category.name}}</td>
+        </tr>
+      {% endfor %}
+    </tbody>
+{% endblock %}

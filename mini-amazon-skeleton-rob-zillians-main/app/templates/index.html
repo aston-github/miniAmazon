@@ -1,0 +1,50 @@
+{% extends "base.html" %}
+
+{% block content %}
+
+
+{% if not current_user.is_authenticated %}
+<br>
+<h5><a href="{{ url_for('users.login') }}">Log in</a> to buy and sell, with {{inventory_size}} listings and growing!</h5>
+{% endif %}
+
+<br>
+
+<h2>Last Chance Offers:</h2>
+<table class='table table-hover table-bordered container'>
+  <thead class="thead-dark">
+    <tr>
+      <th scope="col">Product ID</th>
+      <th scope="col">Product Image</th>
+      <th scope="col">Product Name</th>
+      <th scope="col">Description</th>
+      <th scope="col">Category Name</th>
+      <th scope="col">Average Rating</th>
+    </tr>
+  </thead>
+  <tbody>
+    {% for product in rare_products%}
+      <tr>
+        <th scope="row">{{product.id}}</th>
+        <td><img src = "{{product.image_url}}" width = 100 height = 100></td>
+        <td><a href = "{{url_for('products.detailed_product', prod = product.id)}}"> {{product.name}} </a></td>
+        <td>{{product.description}}</td>
+        <td><a href="{{ url_for('products.category_search_results', search = product.category_name)}}">{{product.category_name}}</a></td>
+        {% for prod2 in avg_ratings %}
+        {% if prod2[0] == product.id %}
+        {% if prod2[1] == "No Reviews" %}
+        <td>{{prod2[1]}}</td>
+        {% else %}
+        <td>{{prod2[1]}} / 5.00</td>
+        {% endif %}
+        {% endif %}
+        {% endfor %}
+      </tr>
+    {% endfor %}
+  </tbody>
+</table>
+
+<br><br>
+
+
+{% endblock %}

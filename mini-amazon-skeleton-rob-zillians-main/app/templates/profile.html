@@ -1,0 +1,214 @@
+{% extends "base.html" %}
+
+{% block content %}
+
+<br>
+
+<p>
+  {% with messages = get_flashed_messages() %}
+  {% if messages %}
+  <ul>
+    {% for message in messages %}
+    <li>{{ message }}</li>
+    {% endfor %}
+  </ul>
+  {% endif %}
+  {% endwith %}
+</p>
+
+<h2>Your Profile:</h2>
+<table class='table table-hover table-bordered container'>
+  <thead class="thead-dark">
+    <tr>
+      <th scope="col">User id</th>
+      <th scope="col">Email</th>
+      <th scope="col">First Name</th>
+      <th scope="col">Last Name</th>
+      <th scope="col">Balance</th>
+      <th scope="col">Address</th>
+    </tr>
+  </thead>
+  <tbody>
+    {% for user in info%}
+      <tr>
+        <th scope="row">{{user.id}}</th>
+        <td>{{user.email}}</td>
+        <td>{{user.firstname}}</td>
+        <td>{{user.lastname}}</td>
+        <td>{{user.balance}}</td>
+        <td>{{user.address}}</td>
+      </tr>
+    {% endfor %}
+  </tbody>
+</table>
+
+<p>View your <a href={{public_profile}}> Public Profile</a></p>
+{% if is_seller %}
+<p>View your <a href="{{ url_for('users.seller_profile') }}"> Seller Portal</a></p>
+{% endif %}
+{% if not is_seller %}
+  <p><a href="{{ url_for('users.seller_profile', welcome_seller = 1) }}"> Become a Seller</a></p>
+{% endif %}
+<p>View your <a href={{purchase_history}}> Purchase History</a></p>
+
+
+<hr>
+
+<h2>Deposit and Withdraw:</h2>
+
+<form action="" method="post">
+  {{ balanceForm.hidden_tag() }}
+  <p>
+    {{ balanceForm.operation.label }}<br/>
+    {{ balanceForm.operation() }}<br/>
+    {% for error in balanceForm.operation.errors %}
+    <span style="color: red;">[{{ error }}]</span>
+    {% endfor %}
+  </p>
+  <p>
+    {{ balanceForm.amount.label }}<br/>
+    {{ balanceForm.amount(size=32) }}<br/>
+    {% for error in balanceForm.amount.errors %}
+    <span style="color: red;">[{{ error }}]</span>
+    {% endfor %}
+  </p>
+  <p>{{ balanceForm.submit1() }}</p>
+  </form>
+
+<hr>
+
+<h2>Venmo:</h2>
+
+<form action="" method="post">
+  {{ venmoForm.hidden_tag() }}
+    <p>
+      {{ venmoForm.email1.label }}<br/>
+      {{ venmoForm.email1(size=64) }}<br/>
+      {% for error in venmoForm.email1.errors %}
+      <span style="color: red;">[{{ error }}]</span>
+      {% endfor %}
+    </p>
+    <p>
+      {{ venmoForm.amount1.label }}<br/>
+      {{ venmoForm.amount1(size=32) }}<br/>
+      {% for error in venmoForm.amount1.errors %}
+      <span style="color: red;">[{{ error }}]</span>
+      {% endfor %}
+    </p>
+    <p>{{ venmoForm.submit3() }}</p>
+    </form>
+
+<hr>
+
+<h2>Edit Profile:</h2>
+
+<form action="" method="post">
+  {{ editForm.hidden_tag() }}
+  <p>
+    {{ editForm.current_password.label }}<br/>
+    {{ editForm.current_password(size=32) }}<br/>
+    {% for error in editForm.current_password.errors %}
+    <span style="color: red;">[{{ error }}]</span>
+    {% endfor %}
+  </p>
+  <p>
+    {{ editForm.firstname.label }}<br/>
+    {{ editForm.firstname(size=32) }}<br/>
+    {% for error in editForm.firstname.errors %}
+    <span style="color: red;">[{{ error }}]</span>
+    {% endfor %}
+  </p>
+  <p>
+    {{ editForm.lastname.label }}<br/>
+    {{ editForm.lastname(size=32) }}<br/>
+    {% for error in editForm.lastname.errors %}
+    <span style="color: red;">[{{ error }}]</span>
+    {% endfor %}
+  </p>
+  <p>
+    {{ editForm.email.label }}<br/>
+    {{ editForm.email(size=64) }}<br/>
+    {% for error in editForm.email.errors %}
+    <span style="color: red;">[{{ error }}]</span>
+    {% endfor %}
+  </p>
+  <p>
+    {{ editForm.password.label }}<br/>
+    {{ editForm.password(size=32) }}<br/>
+    {% for error in editForm.password.errors %}
+    <span style="color: red;">[{{ error }}]</span>
+    {% endfor %}
+  </p>
+  <p>
+    {{ editForm.password2.label }}<br/>
+    {{ editForm.password2(size=32) }}<br/>
+    {% for error in editForm.password2.errors %}
+    <span style="color: red;">[{{ error }}]</span>
+    {% endfor %}
+  </p>
+  <p>
+    {{ editForm.address.label }}<br/>
+    {{ editForm.address(size=32) }}<br/>
+    {% for error in editForm.address.errors %}
+    <span style="color: red;">[{{ error }}]</span>
+    {% endfor %}
+  </p>
+  <p>{{ editForm.submit2() }}</p>
+</form>
+
+<h2>Your product reviews: (click product id to update)</h2>
+<table class='table table-hover table-bordered container'>
+  <thead class="thead-dark">
+    <tr>
+      <th scope="col">Product Id</th>
+      <th scope="col">Name</th>
+      <th scope="col">Rating</th>
+      <th scope="col">Review</th>
+      <th scope="col">Review Date</th>
+      <th scope="col">Delete Review</th>
+    </tr>
+  </thead>
+  <tbody>
+    {% for review in product_reviews%}
+      <tr>
+        <th><a href = "{{url_for('products.detailed_product', prod = review.product_id)}}"> {{review.product_id}} </a></th>
+        <td>{{review.name}}</td>
+        <td>{{review.rating}}</td>
+        <td>{{review.review}}</td>
+        <td>{{review.reviewdate}}</td>
+        <td><a href = "{{url_for('users.delete_review', uid = id, sid_or_pid = review.product_id, type = 0)}}"> Delete</a></td>
+      </tr>
+    {% endfor %}
+  </tbody>
+</table>
+
+<h2>Your seller reviews: (click seller id to update)</h2>
+<table class='table table-hover table-bordered container'>
+  <thead class="thead-dark">
+    <tr>
+      <th scope="col">Seller Id</th>
+      <th scope="col">First Name</th>
+      <th scope="col">Last Name</th>
+      <th scope="col">Rating</th>
+      <th scope="col">Review</th>
+      <th scope="col">Review Date</th>
+      <th scope="col">Delete Review</th>
+    </tr>
+  </thead>
+  <tbody>
+    {% for review in seller_reviews%}
+      <tr>
+        <th><a href = "{{url_for('users.public_profile', id = review[1], is_seller = True)}}"> {{review[1]}} </a></th>
+        <td>{{review.firstname}}</td>
+        <td>{{review.lastname}}</td>
+        <td>{{review.rating}}</td>
+        <td>{{review.review}}</td>
+        <td>{{review.reviewdate}}</td>
+        <td><a href = "{{url_for('users.delete_review', uid = id, sid_or_pid = review[1], type = 1)}}"> Delete</a></td>
+      </tr>
+    {% endfor %}
+  </tbody>
+</table>
+
+
+{% endblock %}

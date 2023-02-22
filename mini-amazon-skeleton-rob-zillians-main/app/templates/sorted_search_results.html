@@ -1,0 +1,116 @@
+<!-- Page that shows the products in a specified category -->
+{% extends "base.html" %}
+
+{% block content %}
+<br>
+
+<!-- Render a form for filtering the search results by price (low to high) -->
+<h3><u>Showing Results for <b>{{category}}</b></u>:</h3>
+
+<br><br>
+  <div style="color: black; text-align: left;" class = "container">
+  <form action= "" class = "form-inline" style = "position: absolute; right: 10px; top: 6.5cm;" method="post" novalidate >
+    {{ priceForm.hidden_tag() }}
+    <div class="form-group">
+      {{ priceForm.lowPrice.label }} &nbsp;<br/>
+      {{ priceForm.lowPrice(class="form-control") }}<br/>
+      {% for error in priceForm.lowPrice.errors %}
+      <span style="color: red;">[{{ error }}]</span>
+      {% endfor %}
+    </div>
+    &nbsp;&nbsp;&nbsp;
+    <div class = "form-group">
+      {{ priceForm.highPrice.label }} &nbsp;<br/>
+      {{ priceForm.highPrice(class = "form-control") }}<br/>
+      {% for error in priceForm.highPrice.errors %}
+      <span style="color: red;">[{{ error }}]</span>
+      {% endfor %}
+    </p>
+    </div>
+    <p>
+      {% with messages = get_flashed_messages() %}
+      {% if messages %}
+      <ul>
+        {% for message in messages %}
+        <li>{{ message }}</li>
+        {% endfor %}
+      </ul>
+      {% endif %}
+      {% endwith %}
+    </p>
+    <div class = "form-group">
+    {{ priceForm.submit1(class="btn btn-light", style = "background-color: lightgray; color: black") }}
+  </div>
+  </form></div>
+<!-- Create buttons for sorting the table below by pid, name (A-Z and Z-A), Price (Ascending and Descending) in that order -->
+<!-- On a new sort, bring the user to the first page of results (page = 1), and keep track of previously inputted price filters -->
+<div style="color: black; text-align: right; margin-bottom: 25px">
+    Sort By:
+    <a href="{{ url_for('products.sorted_search_results_cat', search = category, sort = 0, page = 1, lowprice = low, highprice = high, ca = catalogue_add)}}" type="button" class="btn btn-light" style = "background-color: lightblue; color: black">Product ID</a>
+    <a href="{{ url_for('products.sorted_search_results_cat', search = category, sort = 1, page = 1, lowprice = low, highprice = high, ca = catalogue_add)}}" type="button" class="btn btn-light" style = "background-color: lightblue; color: black">Name (A - Z)</a>
+    <a href="{{ url_for('products.sorted_search_results_cat', search = category, sort = 4, page = 1, lowprice = low, highprice = high, ca = catalogue_add)}}" type="button" class="btn btn-light" style = "background-color: lightblue; color: black">Name (Z - A)</a>
+    <a href="{{ url_for('products.sorted_search_results_cat', search = category, sort = 2, page = 1, lowprice = low, highprice = high, ca = catalogue_add)}}" type="button" class="btn btn-light" style = "background-color: lightblue; color: black">Price (Low)</a>
+    <a href="{{ url_for('products.sorted_search_results_cat', search = category, sort = 3, page = 1, lowprice = low, highprice = high, ca = catalogue_add)}}" type="button" class="btn btn-light" style = "background-color: lightblue; color: black">Price (High)</a>
+  </div>
+
+<!-- Create a table reporting a product's id, seller, image, name, price, description, category, and rating -->
+<!-- 100 or fewer products will be on each page's table -->
+<!-- If a product does not have any reviews, write No Reviews - otherwise, display its average rating out of 5 -->
+<table class='table table-hover table-bordered container' style="border-width:0">
+  <thead class="thead-dark">
+    <tr>
+      <th scope="col">Product ID</th>
+      <th scope="col">Seller ID</th>
+      <th scope="col">Product Image</th>
+      <th scope="col">Product Name</th>
+      <th scope="col">Price</th>
+      <th scope="col">Description</th>
+      <th scope="col">Category Name</th>
+      <th scope="col">Average Rating</th>
+    </tr>
+  </thead>
+  <tbody>
+    {% for product in search_results%}
+      <tr>
+        <th scope="row">{{product.id}}</th>
+        <td>{{product.seller_id}}</td>
+        <td><img src = "{{product.image_url}}" width = 100 height = 100></td>
+        <td><a href = "{{url_for('products.detailed_product', prod = product.id)}}"> {{product.name}} </a></td>
+        <td>${{product.price}}</td>
+        <td>{{product.description}}</td>
+        <td><a href="{{ url_for('products.category_search_results', search = product.category_name)}}">{{product.category_name}}</a></td>
+        {% for prod2 in avg_ratings %}
+        {% if prod2[0] == product.id %}
+        {% if prod2[1] == "No Reviews" %}
+        <td>{{prod2[1]}}</td>
+        {% else %}
+        <td>{{prod2[1]}} / 5.00</td>
+        {% endif %}
+        {% endif %}
+        {% endfor %}
+        {% if catalogue_add %}
+          <td style="border-width: 0;"><a href="{{ url_for('sellers.inventory, update = product.id') }}">Add to Inventory</a></td>
+        {% endif %}
+      </tr>
+    {% endfor %}
+  </tbody>
+</table>
+
+<!-- If there are no products in a category, display No Results beneath the empty table -->
+{% if no_prods %}
+<h2><b>No Results</b></h2>
+{% endif %}
+<br>
+
+<!-- Generate buttons for more pages, keeping track of previously inputted price filters and methods of sorting (price, name, etc.) -->
+<div style="color: black; text-align: center; margin-bottom: 25px">
+  More Results:
+  {% for x in num_pages %}
+  {% if page == x %}
+    <a href="{{ url_for('products.sorted_search_results', search = category, sort = sort, page = x, lowprice = low, highprice = high)}}" type="button" class="btn btn-light" style = "background-color: yellow; color: black">{{x}}</a>
+  {% else %}
+    <a href="{{ url_for('products.sorted_search_results', search = category, sort = sort, page = x, lowprice = low, highprice = high)}}" type="button" class="btn btn-light" style = "background-color: black; color: white">{{x}}</a>
+  {% endif %}
+  {% endfor %}
+</div>
+  {% endblock %}

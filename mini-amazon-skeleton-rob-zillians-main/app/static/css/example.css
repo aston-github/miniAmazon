@@ -1,0 +1,65 @@
+section {
+color: #fff;
+text-align: center;
+}
+
+.container {
+display: table;
+width: 100%;
+}
+
+.left-half {
+background-color: #ff9e2c;
+position: absolute;
+left: 0px;
+width: 50%;
+}
+
+.right-half {
+background-color: #b6701e;
+position: absolute;
+right: 0px;
+width: 50%;
+}
+
+/* Highlight a specific row in seller's inventory or sale_history pages */
+#new-row{
+    background:#FBF2AA
+}
+
+#new-row :hover{
+    background:#FCF7C7
+}
+
+
+.land_form {
+  background: #AFEEEE;
+  padding: 3em;
+  border-radius: 20px;
+  border-left: 1px solid $white;
+  border-top: 1px solid $white;
+  box-shadow: 20px 20px 40px -6px rgba(0,0,0,0.2);
+  text-align: center;
+  position: relative;
+  transition: all 0.2s ease-in-out;
+  font-family: 'Montserrat', sans-serif;
+  }
+
+  .form_container {
+  position: absolute;
+  transform: translate(-50%,-30%);
+  padding-bottom: 10px;
+  top: 60%;
+  left: 50%;
+  opacity: 0.95;
+  }
+
+  .ad_text {
+    overflow: hidden;
+    text-overflow: ellipsis;
+    display: -webkit-box;
+    -webkit-line-clamp: 4; /* number of lines to show */
+            line-clamp: 4; 
+    -webkit-box-orient: vertical;
+  }
+

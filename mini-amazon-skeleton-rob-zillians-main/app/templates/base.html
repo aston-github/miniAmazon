@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <title>Mini Amazon</title>
+  <script src="//code.jquery.com/jquery-1.11.1.min.js"></script>
+  <link href="//maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" rel="stylesheet" id="bootstrap-css">
+  <script src="//maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"></script>
+  <link rel="stylesheet" href="{{ url_for('static', filename='css/example.css') }}">
+  <style>
+    body {
+        font-family: "Lato", sans-serif;
+    }
+
+    .main-head {
+        height: 150px;
+        background: #FFF;
+    }
+
+    .sidenav {
+        height: 100%;
+        background-color: #000;
+        overflow-x: hidden;
+        padding-top: 20px;
+    }
+
+    .main {
+        padding: 0px 10px;
+    }
+
+    .login-main-text {
+        margin-top: 20%;
+        padding: 60px;
+        color: #fff;
+    }
+
+    .login-main-text h2 {
+        font-weight: 300;
+    }
+
+    .btn-black {
+        background-color: #000 !important;
+        color: #fff;
+    }
+  </style>
+</head>
+
+<body>
+  <div class="sidenav">
+    {% block msg %}
+      <h1 style="color:aliceblue">Welcome to CompSci 316 Mini Amazon!</h1>
+      <!-- Create a search bar, which links users to a specific search results page based on their input-->
+      <div id="search-container" class="search-container">
+        <form action= "{{ url_for('products.search_results', sort = 0, page = 1, ca = 64) }}"></a>>
+          <input type="text" placeholder="Search.." name="search">
+          <!-- Seller-guru: Preserve catalogue add mode if seller chooses to search for products to add to their inventory -->
+          {% if catalogue_add %}
+            <input type="hidden" name="ca" value="64">
+          {% endif %}
+          <button type="submit">Submit</button>
+        </form>
+      </div>
+      <br>
+      <!-- Create a button that brings the users to the browse by category pages. By default the user will be shown all categories that begin with the letter A -->
+      <a href="{{ url_for('products.browse_by_category', letter = 'A')}}" type="button" class="btn btn-light" style="background-color: white; color: black; position: absolute; left: 15px;">Browse by Category</a>
+      <div style="color: aliceblue; text-align: right; margin-bottom: 25px">
+        {% if current_user.is_authenticated %}
+          Hello {{current_user.firstname}}!
+          <a href="{{ url_for('index.index') }}" type="button" class="btn btn-light">Home</a>
+          <a href="{{ url_for('users.profile') }}" type="button" class="btn btn-light">Profile</a>
+          <a href="{{ url_for('carts.cart') }}" type="button" class="btn btn-light">Cart</a>
+          <a href="{{ url_for('users.logout') }}" type="button" class="btn btn-light">Log out</a>
+        {% else %}
+          <a href="{{ url_for('index.index') }}" type="button" class="btn btn-light">Home</a>
+          <a href="{{ url_for('users.login') }}" type="button" class="btn btn-light">Log in</a>
+        {% endif %}
+      </div>
+    {% endblock %}
+  </div>
+  <div class="main">
+    {% block content %}{% endblock %}
+  </div>
+</body>
+
+</html>
