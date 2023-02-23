@@ -1,3 +1,27 @@
+# Aston Yong: User Pillar Lead, Data Lead
+
+Milestone 1 Summary: I selected the role of User Pillar Lead and completed the team’s repository set up. I planned needed tables and relationships for ER schema (REPORT.pdf) and contributed to drawing the ER diagram.
+
+Milestone 2 Summary: Completed all User/Account basic features (see REPORT(1).pdf), found in Profile, Public Profile, and Purchase History pages. I developed and generated the team's large test dataset, lead team meetings, and contributed to E/R optimization.
+
+Milestone 3 Summary: I created a realistic database using real Amazon product names, descriptions, images, and categories. I implemented a Venmo feature for users, and improved frontend  login and registration forms. I also updated the database schema (REPORT(1).pdf) to create product owner attribute and created the Last Chance Offers feature on the home page.
+
+Key Contributions: 
+mini-amazon-skeleton-rob-zillians-main/db/data/generator.py
+mini-amazon-skeleton-rob-zillians-main/app/users.py
+mini-amazon-skeleton-rob-zillians-main/app/models/user.py
+mini-amazon-skeleton-rob-zillians-main/app/index.py
+mini-amazon-skeleton-rob-zillians-main/app/templates/profile.html
+mini-amazon-skeleton-rob-zillians-main/app/templates/register.html
+mini-amazon-skeleton-rob-zillians-main/app/templates/public_profile.html
+mini-amazon-skeleton-rob-zillians-main/app/templates/login.html
+mini-amazon-skeleton-rob-zillians-main/app/templates/index.html
+mini-amazon-skeleton-rob-zillians-main/app/templates/seller_profile.html
+
+# Video Demo (Aston 0:00 - 2:30)
+
+https://drive.google.com/file/d/1BnqlkzJM-bcneWTV-EW47gIOEWuO6d9W/view
+
 # mini-amazon-skeleton
 
 Skeleton code for the CompSci 316 undergraduate course project.
