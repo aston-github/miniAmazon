@@ -4,7 +4,7 @@ Milestone 1 Summary: I selected the role of User Pillar Lead and completed the t
 
 Milestone 2 Summary: Completed all User/Account basic features (see REPORT(1).pdf), found in Profile, Public Profile, and Purchase History pages. I developed and generated the team's large test dataset, lead team meetings, and contributed to E/R optimization.
 
-Milestone 3 Summary: I created a realistic database using real Amazon product names, descriptions, images, and categories. I implemented a Venmo feature for users, and improved frontend  login and registration forms. I also updated the database schema (see REPORT(1).pdf) to create product owner attribute and created the Last Chance Offers feature on the home page.
+Milestone 3 Summary: I created scripts to generate a realistic database using real Amazon product names, descriptions, images, and categories. I implemented a Venmo feature for users, and improved frontend  login and registration forms. I also updated the database schema (see REPORT(1).pdf) to create the product owner attribute and created the Last Chance Offers feature on the home page.
 
 Key Contributions (Aston): 
 
@@ -33,6 +33,8 @@ Key Contributions (Aston):
 [mini-amazon-skeleton-rob-zillians-main/app/templates/index.html](https://github.com/aston-github/miniAmazonImport/blob/main/mini-amazon-skeleton-rob-zillians-main/app/templates/index.html)
 
 [mini-amazon-skeleton-rob-zillians-main/app/templates/seller_profile.html](https://github.com/aston-github/miniAmazonImport/blob/main/mini-amazon-skeleton-rob-zillians-main/app/templates/seller_profile.html)
+
+[mini-amazon-skeleton-rob-zillians-main/app/templates/seller_profile.html](https://github.com/aston-github/miniAmazonImport/blob/main/mini-amazon-skeleton-rob-zillians-main/app/templates/purchase_history.html)(https://github.com/aston-github/miniAmazon/blob/db872a88f367eec5be409c8422663cb3f405dce5/mini-amazon-skeleton-rob-zillians-main/app/templates/purchase_history.html)
 
 # Video Demo (Aston 0:00 - 2:30)
 
