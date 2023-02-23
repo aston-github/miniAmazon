@@ -7,15 +7,29 @@ Milestone 2 Summary: Completed all User/Account basic features (see REPORT(1).pd
 Milestone 3 Summary: I created a realistic database using real Amazon product names, descriptions, images, and categories. I implemented a Venmo feature for users, and improved frontend  login and registration forms. I also updated the database schema (REPORT(1).pdf) to create product owner attribute and created the Last Chance Offers feature on the home page.
 
 Key Contributions: 
+
 mini-amazon-skeleton-rob-zillians-main/db/data/generator.py
+
 mini-amazon-skeleton-rob-zillians-main/app/users.py
+
 mini-amazon-skeleton-rob-zillians-main/app/models/user.py
+
 mini-amazon-skeleton-rob-zillians-main/app/index.py
+
+mini-amazon-skeleton-rob-zillians-main/db/create.sql
+
+mini-amazon-skeleton-rob-zillians-main/db/load.sql
+
 mini-amazon-skeleton-rob-zillians-main/app/templates/profile.html
+
 mini-amazon-skeleton-rob-zillians-main/app/templates/register.html
+
 mini-amazon-skeleton-rob-zillians-main/app/templates/public_profile.html
+
 mini-amazon-skeleton-rob-zillians-main/app/templates/login.html
+
 mini-amazon-skeleton-rob-zillians-main/app/templates/index.html
+
 mini-amazon-skeleton-rob-zillians-main/app/templates/seller_profile.html
 
 # Video Demo (Aston 0:00 - 2:30)
