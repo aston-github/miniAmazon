@@ -1,4 +1,4 @@
-# Aston Yong: User Pillar Lead, Data Lead
+# Aston Yong: User Pillar Lead, Test Data Lead
 
 Milestone 1 Summary: I selected the role of User Pillar Lead and completed the team’s repository set up. I planned needed tables and relationships for ER schema (REPORT.pdf) and contributed to drawing the ER diagram.
 
