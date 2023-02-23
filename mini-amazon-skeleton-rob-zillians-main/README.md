@@ -34,15 +34,14 @@ Key Contributions (Aston):
 
 [mini-amazon-skeleton-rob-zillians-main/app/templates/seller_profile.html](https://github.com/aston-github/miniAmazonImport/blob/main/mini-amazon-skeleton-rob-zillians-main/app/templates/seller_profile.html)
 
-[mini-amazon-skeleton-rob-zillians-main/app/templates/seller_profile.html](https://github.com/aston-github/miniAmazonImport/blob/main/mini-amazon-skeleton-rob-zillians-main/app/templates/purchase_history.html)(https://github.com/aston-github/miniAmazon/blob/db872a88f367eec5be409c8422663cb3f405dce5/mini-amazon-skeleton-rob-zillians-main/app/templates/purchase_history.html)
+[mini-amazon-skeleton-rob-zillians-main/app/templates/seller_profile.html](https://github.com/aston-github/miniAmazonImport/blob/main/mini-amazon-skeleton-rob-zillians-main/app/templates/purchase_history.html)
 
 # Video Demo (Aston 0:00 - 2:30)
 
 https://drive.google.com/file/d/1BnqlkzJM-bcneWTV-EW47gIOEWuO6d9W/view
 
-# mini-amazon-skeleton
+# mini-amazon
 
-Skeleton code for the CompSci 316 undergraduate course project.
 This course project is intended as a 'standard option'.
 Created by [Rickard Stureborg](http://www.rickard.stureborg.com) and [Yihao Hu](https://www.linkedin.com/in/yihaoh/).
 
